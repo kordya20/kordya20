@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+
+    <table border="1" id="tableMessage">
+        <tr>
+            <th>Name</th>
+            <th>Categori</th>
+            <th>Price</th>
+        </tr>
+    </table>
+        <h2>Search by ID</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();" />
+        <p id="product" />
+  
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+    var uri = 'api/products';
+
+    $(document).ready(function () {
+       
+      // Send an AJAX request
+      $.getJSON(uri)
+          .done(function (data) {
+            // On success, 'data' contains a list of products.
+     
+                var tr;
+                for (var i = 0; i < data.length; i++) {
+                  
+                    var table = $('#tableMessage');
+                    for (var i = 0; i < data.length; i++) {
+                        table.append("<tr>" +
+                            "<td>" + data[i].Name + "</td>" +
+                            "<td>" + data[i].Categori + "</td>" +
+                            "<td>" + data[i].Price + "</td>" +
+                            "</tr>");
+                    }
+                }
+                alert(tr);
+                
+            });
+          });
+  
+
+    
+
+    function find() {
+        alert("find");
+      var id = $('#prodId').val();
+      $.getJSON(uri + '/' + id)
+          .done(function (data) {
+           
+              var tr;
+              $("#tableMessage").remove();
+              for (var i = 0; i < data.length; i++) {
+                  tr = $('#tableMessage');
+                  tr.append("<td>" + data[i].Name + "</td>");
+                  tr.append("<td>" + data[i].Categori + "</td>");
+                  tr.append("<td>" + data[i].Price + "</td>");
+                  $('#tableMessage').append(tr);
+              }
+              //yfutfrtyftyfyu
+
+
+          })
+          .fail(function (jqXHR, textStatus, err) {
+            $('#product').text('Error: ' + err);
+          });
+    }
+    </script>
